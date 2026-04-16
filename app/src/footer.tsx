@@ -1,4 +1,3 @@
-import { Menu } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -9,28 +8,24 @@ const navItems = [
   { id: 4, link: "/login", text: "Login" },
   { id: 5, link: "/signup", text: "Sign Up" },
 ];
-const Nav = () => {
+const Footer = () => {
   return (
-    <div className="py-4 md:py-6 md:text-lg text-base px-8 md:px-16 bg-gray-900 text-white">
-      <div className="flex justify-between w-full">
+    <div className="bg-[#0e1726] h-75 text-white py-16 px-12 md:px-24">
+      <div className="block md:flex gap-8">
         <Link href="/">
-          <h1 className="font-bold">Nulky</h1>
+          <h1 className="font-bold text-2xl md:text-6xl">Nulky</h1>
         </Link>
 
-        <ul className="md:flex gap-6 hidden">
+        <ul className="flex flex-col gap-3 text-base md:text-xl">
           {navItems.map((item) => (
             <Link key={item.id} href={item.link}>
               <li>{item.text}</li>
             </Link>
           ))}
         </ul>
-
-        <div className="block md:hidden">
-          <Menu />
-        </div>
       </div>
     </div>
   );
 };
 
-export default Nav;
+export default Footer;

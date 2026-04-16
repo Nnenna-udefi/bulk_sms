@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <div className="">
       {/* Hero section */}
-      <section className="h-screen bg-[url('../image/hero.png')] px-6 md:px-16 py-6 md:py-16 text-white">
+      <section className="md:h-screen h-125 bg-[url('../image/hero.png')] px-6 md:px-16 py-6 md:py-16 text-white">
         <div className="flex flex-col gap-4 md:gap-6  py-6 md:py-16 w-full md:w-[60%] text-center md:text-left">
           <h1 className="text-4xl md:text-5xl font-bold ">
             Send Messages That Reach
@@ -28,15 +28,15 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="bg-[#fafafa] border-y border-gray-200 block py-10 px-12 md:px-24  md:flex justify-between">
-        <div className="text-xl md:text-2xl flex gap-4 items-center">
+      <section className="bg-[#fafafa] border-y text-black border-gray-200 block py-10 px-12 md:px-24  md:flex justify-between">
+        <div className="text-base md:text-2xl flex gap-4 items-center">
           <p>Instantly</p>
           <DotSquare />
           <p> Reliably</p>
           <DotSquare />
           <p>At Scale</p>
         </div>
-        <button className="px-4 py-2  md:text-lg font-bold rounded-md bg-[#0e1726] text-white hover:bg-white hover:border hover:text-[#6495ED] w-fit">
+        <button className="px-4 py-2 text-base  md:text-lg font-bold rounded-md bg-[#0e1726] text-white hover:bg-white hover:border hover:text-[#6495ED] w-fit">
           Sign Up Here
         </button>
       </section>
@@ -80,7 +80,7 @@ const Home = () => {
             {started.map((steps) => (
               <div
                 key={steps.id}
-                className="flex gap-4 py-6 bg-white px-6 rounded-2xl"
+                className="flex gap-4 py-6 bg-white shadow-lg hover:w-80 shadow-olive-900 px-6 rounded-2xl"
               >
                 <div className="flex flex-col gap-3 md:gap-6">
                   <div className="border border-gray-200 rounded-md p-4 w-fit">
