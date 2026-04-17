@@ -31,7 +31,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="bg-[#fafafa] border-y text-black border-gray-200 block py-10 px-12 md:px-24  md:flex justify-between">
+      <section className="bg-[#fafafa] border-y text-black border-gray-200 block py-10 px-8 md:px-24  md:flex justify-between">
         <div className="text-sm md:text-2xl pb-4 md:pb-0 flex gap-4 items-center">
           <p>Instantly</p>
           <DotSquare />
