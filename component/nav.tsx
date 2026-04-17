@@ -76,7 +76,7 @@ const Nav = () => {
               animate={{ x: "0%", opacity: 1 }}
               exit={{ x: "-100%", opacity: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="h-screen pt-13 fixed inset-0 w-full bg-white text-body z-20"
+              className="h-screen pt-13 fixed inset-0 w-[80%] bg-white text-[#0e1726] z-20"
             >
               <div
                 className="absolute top-4 right-4 cursor-pointer"
@@ -95,8 +95,8 @@ const Nav = () => {
                         onClick={() => handleNavClick(item.link)}
                         className={`${
                           isActive
-                            ? "text-[#0e1726]"
-                            : "text-body hover:text-[#0e1726]"
+                            ? "font-bold"
+                            : "text-[#0e1726] hover:text-[#4f4e4c]"
                         } w-full text-[18px]`}
                       >
                         {item.text}
