@@ -1,6 +1,7 @@
 import { DotSquare } from "lucide-react";
 import React from "react";
 import { features, started } from "./helper/constant";
+import { motion } from "framer-motion";
 
 const Home = () => {
   return (
@@ -53,7 +54,7 @@ const Home = () => {
         <div className="py-10 md:py-18">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
             {features.map((feature) => (
-              <div key={feature.id} className="flex gap-4 py-6 ">
+              <motion.div key={feature.id} className="flex gap-4 py-6 ">
                 <div className="bg-[#0e1726] rounded-md md:p-4 p-2 text-white h-fit">
                   <feature.icon />
                 </div>
@@ -63,7 +64,7 @@ const Home = () => {
                   </h3>
                   <p className="w-full md:w-[70%]">{feature.text}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
