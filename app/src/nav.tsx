@@ -5,8 +5,9 @@ import React from "react";
 const navItems = [
   { id: 1, link: "/", text: "Home" },
   { id: 2, link: "/about_us", text: "About Us" },
-  { id: 3, link: "/faq", text: "FAQ" },
+  { id: 3, link: "#faq", text: "FAQ" },
   { id: 4, link: "/login", text: "Login" },
+  { id: 4, link: "/contact", text: "Contact" },
   { id: 5, link: "/signup", text: "Sign Up" },
 ];
 const Nav = () => {
@@ -20,7 +21,7 @@ const Nav = () => {
         <ul className="md:flex gap-6 hidden">
           {navItems.map((item) => (
             <Link key={item.id} href={item.link}>
-              <li>{item.text}</li>
+              <li className="hover:border-b">{item.text}</li>
             </Link>
           ))}
         </ul>

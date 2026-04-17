@@ -1,13 +1,15 @@
+"use client";
 import { DotSquare } from "lucide-react";
 import React from "react";
 import { features, started } from "./helper/constant";
 import { motion } from "framer-motion";
+import Faq from "./faq";
 
 const Home = () => {
   return (
     <div className="">
       {/* Hero section */}
-      <section className="md:h-screen h-125 bg-[url('../image/hero.png')] px-6 md:px-16 py-10 md:py-24 text-white">
+      <section className="md:h-screen h-125 bg-[url('../image/hero.png')] px-6 md:px-16 py-10 md:py-18 text-white">
         <div className="flex flex-col gap-4 md:gap-6  py-6 md:py-16 w-full md:w-[60%] text-center md:text-left">
           <h1 className="text-4xl md:text-5xl font-bold ">
             Send Messages That Reach
@@ -38,7 +40,7 @@ const Home = () => {
           <p>At Scale</p>
         </div>
         <button className="px-2 md:px-4 py-2 text-sm   md:text-lg font-bold rounded-md bg-[#0e1726] text-white hover:bg-white hover:border hover:text-[#6495ED] w-fit">
-          Sign Up Here
+          Create Free Account
         </button>
       </section>
 
@@ -54,7 +56,18 @@ const Home = () => {
         <div className="py-10 md:py-18">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
             {features.map((feature) => (
-              <motion.div key={feature.id} className="flex gap-4 py-6 ">
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                transition={{ duration: 0.3 }}
+                variants={{
+                  visible: { opacity: 1, scale: 1 },
+                  hidden: { opacity: 0, scale: 0 },
+                }}
+                key={feature.id}
+                className="flex gap-4 py-6 "
+              >
                 <div className="bg-[#0e1726] rounded-md md:p-4 p-2 text-white h-fit">
                   <feature.icon />
                 </div>
@@ -96,6 +109,10 @@ const Home = () => {
             ))}
           </div>
         </div>
+      </section>
+
+      <section>
+        <Faq />
       </section>
     </div>
   );

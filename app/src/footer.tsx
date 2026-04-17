@@ -48,6 +48,9 @@ const Footer = () => {
           </div>
         </div>
       </div>
+      <div className="py-4 text-center text-sm">
+        © 2026 Nulky. All Rights Reserved.
+      </div>
     </div>
   );
 };
