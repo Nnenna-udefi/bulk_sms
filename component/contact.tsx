@@ -32,7 +32,7 @@ const Contact = () => {
           <h2 className="font-bold text-black text-lg">
             You can send us a message below
           </h2>
-          <form className="flex flex-col gap-4">
+          <form className="flex flex-col gap-4 w-full">
             <input
               type="text"
               placeholder="Your Name"
@@ -45,7 +45,7 @@ const Contact = () => {
             />
             <textarea
               placeholder="Your message"
-              cols={3}
+              cols={5}
               className="border rounded-md p-2 w-full border-[#0e1726] text-[#0e1726] bg-none placeholder:text-[#4f4e4c]"
             />
           </form>

@@ -4,6 +4,7 @@ import React from "react";
 import { features, started } from "./helper/constant";
 import { motion } from "framer-motion";
 import Faq from "./faq";
+import Link from "next/link";
 
 const Home = () => {
   return (
@@ -21,12 +22,16 @@ const Home = () => {
             no complexity.
           </p>
           <div className="flex gap-4  mt-10 justify-center md:justify-start">
-            <button className="px-4 md:px-6 py-2 md:py-4 md:text-lg font-bold rounded-full bg-[#6495ED] text-white hover:bg-white hover:text-[#6495ED] w-fit">
-              Get Started
-            </button>
-            <button className="px-4 md:px-6 py-2 md:py-4 md:text-lg font-bold rounded-full text-white hover:bg-[#6495ED] bg-none hover:border-none border border-white w-fit">
-              Learn More
-            </button>
+            <Link href="/auth/login">
+              <button className="px-4 md:px-6 py-2 md:py-4 text-sm md:text-lg font-bold rounded-full bg-[#6495ED] text-white hover:bg-white hover:text-[#6495ED] w-fit">
+                Get Started
+              </button>
+            </Link>
+            <Link href="/about_us">
+              <button className="px-4 md:px-6 py-2 md:py-4 text-sm md:text-lg font-bold rounded-full text-white hover:bg-[#6495ED] bg-none hover:border-none border border-white w-fit">
+                Learn More
+              </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -39,9 +44,11 @@ const Home = () => {
           <DotSquare />
           <p>At Scale</p>
         </div>
-        <button className="px-2 md:px-4 py-2 text-sm   md:text-lg font-bold rounded-md bg-[#0e1726] text-white hover:bg-white hover:border hover:text-[#6495ED] w-fit">
-          Create Free Account
-        </button>
+        <Link href="/auth/login">
+          <button className="px-2 md:px-4 py-2 text-sm   md:text-lg font-bold rounded-md bg-[#0e1726] text-white hover:bg-white hover:border hover:text-[#6495ED] w-fit">
+            Create Free Account
+          </button>
+        </Link>
       </section>
 
       <section className="py-10 bg-[#fff6f3] px-12 md:px-24 text-[#0e1726]">

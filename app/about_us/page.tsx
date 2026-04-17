@@ -17,8 +17,10 @@ const About = () => {
         </p>
         <p>
           We combine powerful technology with a user-friendly experience, giving
-          you full control over your messaging while ensuring high delivery
-          rates and real-time performance.{" "}
+          you full control over your messaging while{" "}
+          <em className="font-bold">
+            ensuring high delivery rates and real-time performance.
+          </em>{" "}
         </p>
         <p>
           From small businesses to large organizations, we are committed to
