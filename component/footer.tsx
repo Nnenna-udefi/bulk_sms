@@ -6,9 +6,9 @@ import { SiFacebook, SiInstagram, SiX } from "react-icons/si";
 const navItems = [
   { id: 1, link: "/", text: "Home" },
   { id: 2, link: "/about_us", text: "About Us" },
-  { id: 3, link: "/faq", text: "FAQ" },
-  { id: 4, link: "/login", text: "Login" },
-  { id: 5, link: "/signup", text: "Sign Up" },
+  { id: 3, link: "#faq", text: "FAQ" },
+  { id: 4, link: "/auth/login", text: "Login" },
+  { id: 5, link: "/auth/signup", text: "Sign Up" },
 ];
 const Footer = () => {
   return (
