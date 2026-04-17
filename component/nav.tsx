@@ -55,7 +55,7 @@ const Nav = () => {
           ))}
         </ul>
 
-        <div className="block md:hidden">
+        <div className="block md:hidden" onClick={handleNav}>
           <Menu />
         </div>
       </div>

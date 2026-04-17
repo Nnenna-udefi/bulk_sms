@@ -47,7 +47,7 @@ const Login = () => {
   }
 
   return (
-    <div className="py-20 px-4 bg-[#fff6f3] text-[#0e1726]">
+    <div className="py-20 px-6 bg-[#fff6f3] text-[#0e1726]">
       <div className="bg-white shadow-md shadow-black container rounded-2xl max-w-125 mx-auto px-4 md:px-6 py-8 lg:px-8  h-full flex flex-col gap-4">
         <div className="text-center py-4">
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
@@ -82,7 +82,7 @@ const Login = () => {
 
           <button
             disabled={loading}
-            className="px-4 py-2 md:text-lg font-bold rounded-full bg-[#6495ED] text-white hover:bg-white hover:text-[#6495ED] w-fit"
+            className="px-4 py-2 md:text-lg font-bold rounded-full bg-[#0e1726] text-white hover:bg-white hover:text-[#0e1726] w-full"
           >
             {loading ? "Logging in..." : "Log In"}
           </button>
