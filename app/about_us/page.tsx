@@ -5,8 +5,8 @@ import Image from "next/image";
 
 const About = () => {
   return (
-    <div className="bg-[#fff6f3] text-[#0e1726] px-12 md:px-24 py-16 md:py-24 block md:flex gap-6 justify-between">
-      <div className="flex flex-col gap-2">
+    <div className="bg-[#fff6f3] text-[#0e1726] px-12 md:px-24 py-16 md:py-24 flex flex-col-reverse md:flex-col gap-6 justify-between">
+      <div className="flex flex-col gap-2 py-4">
         <p>
           We believe communication should be simple, fast, and dependable. Our
           platform was built to help businesses connect with their audience
