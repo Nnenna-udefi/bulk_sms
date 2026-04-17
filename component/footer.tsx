@@ -48,7 +48,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="py-4 text-center text-sm">
+      <div className="pt-4 pb-2 text-center text-sm">
         © 2026 Nulky. All Rights Reserved.
       </div>
     </div>

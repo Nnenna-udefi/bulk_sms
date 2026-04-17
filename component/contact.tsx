@@ -4,8 +4,8 @@ import Image from "next/image";
 
 const Contact = () => {
   return (
-    <div>
-      <div className="w-full h-20">
+    <div className="bg-white text-[#0e1726]">
+      <div className="w-full h-125">
         <Image
           src={contactImg}
           alt="contact hero image"

@@ -47,7 +47,7 @@ const Login = () => {
   }
 
   return (
-    <div className="py-10 px-4 min-h-screen">
+    <div className="py-20 px-4 bg-[#fff6f3] text-[#0e1726]">
       <div className="bg-white container rounded-2xl max-w-125 mx-auto px-4 md:px-6 py-8 lg:px-8  h-full flex flex-col gap-4">
         <div className="text-center py-4">
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">

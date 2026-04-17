@@ -30,12 +30,9 @@ const faqs = [
 
 const Faq = () => {
   return (
-    <div
-      className="container mx-auto max-w-4xl py-12 px-8 sm:px-6 lg:px-16"
-      id="faq"
-    >
+    <div className="container bg-black text-white mx-auto max-w-4xl py-12 px-8 sm:px-6 lg:px-16">
       <div className="text-center mb-12">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0e1726] ">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
           Frequently Asked Questions
         </h1>
         <p className="mt-4 text-lg text-foreground/90">
