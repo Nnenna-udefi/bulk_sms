@@ -48,6 +48,10 @@ const Contact = () => {
               cols={5}
               className="border rounded-md p-2 w-full border-[#0e1726] text-[#0e1726] bg-none placeholder:text-[#4f4e4c]"
             />
+
+            <button className="px-4 py-2  md:text-lg font-bold rounded-full bg-[#0e1726] text-white hover:bg-white hover:text-[#0e1726] w-full">
+              Submit
+            </button>
           </form>
         </div>
       </div>
