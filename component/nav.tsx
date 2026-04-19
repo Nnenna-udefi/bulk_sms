@@ -48,11 +48,16 @@ const Nav = () => {
         </Link>
 
         <ul className="md:flex gap-6 hidden">
-          {navItems.map((item) => (
-            <Link key={item.id} href={item.link}>
-              <li className="hover:border-b">{item.text}</li>
-            </Link>
-          ))}
+          {navItems.map((item) => {
+            const isActive = pathname === item.link;
+            return (
+              <Link key={item.id} href={item.link}>
+                <li className={`${isActive ? "border-b" : ""} hover:border-b`}>
+                  {item.text}
+                </li>
+              </Link>
+            );
+          })}
         </ul>
 
         <div className="block md:hidden" onClick={handleNav}>
@@ -97,7 +102,7 @@ const Nav = () => {
                           isActive
                             ? "font-bold"
                             : "text-[#0e1726] hover:text-[#4f4e4c]"
-                        } w-full text-[18px]`}
+                        } w-full text-lg`}
                       >
                         {item.text}
                       </button>

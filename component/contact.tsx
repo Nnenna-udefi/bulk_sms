@@ -28,7 +28,7 @@ const Contact = () => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 items-center justify-center py-10 px-12 md:px-16">
+        <div className="flex max-w-4xl flex-col gap-4 items-center justify-center py-10 px-12 md:px-16">
           <h2 className="font-bold text-black text-lg">
             You can send us a message below
           </h2>

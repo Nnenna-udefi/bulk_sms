@@ -30,32 +30,34 @@ const faqs = [
 
 const Faq = () => {
   return (
-    <div className="container bg-black text-white mx-auto max-w-4xl py-12 px-8 sm:px-6 lg:px-16">
-      <div className="text-center mb-12">
-        <h1 className="text-2xl sm:text-4xl font-bold tracking-tight">
-          Frequently Asked Questions
-        </h1>
-        {/* <p className="mt-4 text-lg text-foreground/90">
+    <div className="container bg-black text-white md:py-16 py-12 px-8 sm:px-6 lg:px-16">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-2xl sm:text-4xl font-bold tracking-tight">
+            Frequently Asked Questions
+          </h1>
+          {/* <p className="mt-4 text-lg text-foreground/90">
           Find answers to common questions about medical laboratory tests.
         </p> */}
-      </div>
+        </div>
 
-      <Accordion type="single" collapsible className="w-full">
-        {faqs.map((faq, index) => (
-          <AccordionItem
-            value={`item-${index}`}
-            key={index}
-            className="bg-black/50 rounded-lg mb-4 px-4 shadow-sm hover:bg-white transition-colors"
-          >
-            <AccordionTrigger className="text-left font-semibold text-base md:text-lg hover:no-underline">
-              {faq.question}
-            </AccordionTrigger>
-            <AccordionContent className="text-sm md:text-base text-[#fafafa]">
-              {faq.answer}
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
+        <Accordion type="single" collapsible className="w-full">
+          {faqs.map((faq, index) => (
+            <AccordionItem
+              value={`item-${index}`}
+              key={index}
+              className="bg-black/50 rounded-lg mb-4 px-4 shadow-sm hover:bg-gray-800 transition-colors"
+            >
+              <AccordionTrigger className="text-left font-semibold text-base md:text-lg hover:no-underline">
+                {faq.question}
+              </AccordionTrigger>
+              <AccordionContent className="text-sm md:text-base text-[#fafafa]">
+                {faq.answer}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
     </div>
   );
 };
