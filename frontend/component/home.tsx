@@ -118,7 +118,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section id="faq">
+      <section id="faq" className="w-full">
         <Faq />
       </section>
     </div>
