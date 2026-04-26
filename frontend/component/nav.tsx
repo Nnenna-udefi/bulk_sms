@@ -10,8 +10,8 @@ const navItems = [
   { id: 2, link: "/about_us", text: "About Us" },
   { id: 3, link: "#faq", text: "FAQ" },
   { id: 4, link: "/contact", text: "Contact" },
-  { id: 4, link: "/auth/login", text: "Login" },
-  { id: 5, link: "/auth/signup", text: "Sign Up" },
+  { id: 5, link: "/auth/login", text: "Login" },
+  { id: 6, link: "/auth/signup", text: "Sign Up" },
 ];
 const Nav = () => {
   const [nav, showNav] = useState(false);

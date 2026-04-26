@@ -118,7 +118,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section id="faq" className="w-full">
+      <section id="faq" className="w-full bg-black">
         <Faq />
       </section>
     </div>

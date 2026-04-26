@@ -12,7 +12,7 @@ const navItems = [
 ];
 const Footer = () => {
   return (
-    <div className="bg-[#0e1726] h-full md:h-75 text-white py-16 px-12 md:px-24">
+    <div className="bg-[#0e1726] w-full h-full text-white pt-16 pb-10 px-12 md:px-24">
       <div className="block md:flex justify-between gap-8">
         <Link href="/">
           <h1 className="font-bold text-2xl md:text-6xl">Nulky</h1>
@@ -48,7 +48,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="pt-4 md:pt-10 md:pb-6 pb-2 text-center text-sm bg-[#0e1726]">
+      <div className=" w-full text-center text-sm pt-6 md:pt-8">
         © 2026 Nulky. All Rights Reserved.
       </div>
     </div>

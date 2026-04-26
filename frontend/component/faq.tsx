@@ -31,7 +31,7 @@ const faqs = [
 const Faq = () => {
   return (
     <div className="container w-full flex flex-col justify-center items-center bg-black text-white md:py-24 py-12 px-8 sm:px-6 lg:px-16">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl">
         <div className="text-center mb-12">
           <h1 className="text-2xl sm:text-4xl font-bold tracking-tight">
             Frequently Asked Questions
