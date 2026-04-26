@@ -1,13 +1,9 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-// import { createClient } from "@/src/lib/supabaseClient";
-// import { Button } from "@/src/ui/button";
-// import { Input } from "@/src/ui/input";
 import Link from "next/link";
+import { api } from "@/component/lib/api";
 // import { useToast } from "@/src/hooks/use-toast";
-
-// const supabase = createClient();
 
 const Login = () => {
   const router = useRouter();
@@ -22,17 +18,13 @@ const Login = () => {
     setLoading(true);
     setError(null);
 
-    // const { error } = await supabase.auth.signInWithPassword({
-    //   email,
-    //   password,
-    // });
-
+    try {
+      const res = await api.login({ email, password });
+      localStorage.setItem("token", res.token);
+    } catch (err: any) {
+      console.error(err.message);
+    }
     setLoading(false);
-
-    // if (error) {
-    //   setError(error.message);
-    //   return;
-    // }
 
     // clear fields
     setEmail("");

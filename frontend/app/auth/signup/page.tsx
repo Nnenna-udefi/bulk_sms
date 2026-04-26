@@ -1,4 +1,5 @@
 "use client";
+import { api } from "@/component/lib/api";
 // import { toast } from "@/src/hooks/use-toast";
 // import { createClient } from "@/src/lib/supabaseClient";
 
@@ -8,42 +9,59 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import PasswordChecklist from "react-password-checklist";
 
-// const supabase = createClient();
-
 const Signup = () => {
   const router = useRouter();
-  const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+    passwordAgain: "",
+  });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [passwordAgain, setPasswordAgain] = useState("");
+
+  const auth = [
+    { name: "name", type: "text", label: "Name", placeholder: "Name" },
+    {
+      name: "email",
+      type: "email",
+      label: "Email Address",
+      placeholder: "Email Address",
+    },
+    {
+      name: "phone",
+      type: "text",
+      label: "Phone Number",
+      placeholder: "Phone Number",
+    },
+    {
+      name: "password",
+      type: "password",
+      label: "Password",
+      placeholder: "*******",
+    },
+    {
+      name: "passwordAgain",
+      type: "password",
+      label: "Confirm Password",
+      placeholder: "*******",
+    },
+  ];
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setLoading(true);
-    //     const { error } = await supabase.auth.signUp({
-    //       email,
-    //       password,
-    //       options: {
-    //         data: {
-    //           full_name: name, // saves to user metadata on supabase
-    //         },
-    //         emailRedirectTo: `${window.location.origin}/login`,
-    //       },
-    //     });
-    //     setLoading(false);
-    //     if (error) {
-    //       setError(error.message);
-    //       return;
-    //     }
+    setError(null);
 
+    const { name, email, phone, password, passwordAgain } = form;
+
+    // validation first
     if (password !== passwordAgain) {
       setError("Passwords do not match.");
       return;
     }
 
-    // Regex checks for password criteria
     const minLength = password.length >= 8;
     const hasNumber = /\d/.test(password);
     const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
@@ -53,17 +71,41 @@ const Signup = () => {
       setError("Password does not meet the required criteria.");
       return;
     }
-    if (!error) {
-      setFirstName("");
-      setEmail("");
-      setPassword("");
-      //   toast({
-      //     title: "Account created!",
-      //     description: "Check your email to confirm your account.",
-      //   });
+
+    setLoading(true);
+
+    // API call only after validation
+    const { error } = await api.register({
+      name,
+      email,
+      phone,
+      password,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      setError(error.message);
+      return;
     }
+
+    // success flow
+    setForm({
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      passwordAgain: "",
+    });
+
     router.push(`/signUp/emailSent?email=${encodeURIComponent(email)}`);
   }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
   return (
     <div className="py-20 px-6 bg-[#fff6f3] text-[#0e1726]">
       <div className="bg-white shadow-md shadow-black container rounded-2xl max-w-125 mx-auto px-4 md:px-6 py-8 lg:px-8  h-full flex flex-col gap-4">
@@ -83,51 +125,27 @@ const Signup = () => {
             </div>
           )}
           <div className="flex flex-col gap-2">
-            <label htmlFor="name">Full Name</label>
-            <input
-              //   value={firstName}
-              className="border rounded-md p-2 text-[#0e1726] bg-none border-[#0e1726]"
-              type="text"
-              placeholder="Full name"
-              //   onChange={(e) => setFirstName(e.target.value)}
-            />
+            {auth.map((field) => (
+              <div key={field.name} className="flex flex-col gap-2">
+                <label htmlFor={field.name}>{field.label}</label>
+
+                <input
+                  name={field.name}
+                  type={field.type}
+                  value={form[field.name as keyof typeof form]}
+                  placeholder={field.placeholder}
+                  onChange={handleChange}
+                  className="border rounded-md p-2 text-[#0e1726] bg-none border-[#0e1726]"
+                />
+              </div>
+            ))}
           </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="email">Email</label>
-            <input
-              //   value={email}
-              className="border rounded-md p-2 text-[#0e1726] bg-none border-[#0e1726]"
-              type="email"
-              placeholder="Email Address"
-              //   onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            {" "}
-            <label htmlFor="password">Password</label>
-            <input
-              //   value={password}
-              type="password"
-              placeholder="*******"
-              className="border rounded-md p-2 text-[#0e1726] bg-none border-[#0e1726]"
-              //   onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="password">Enter Password Again</label>
-            <input
-              //   value={passwordAgain}
-              className="border rounded-md p-2 text-[#0e1726] bg-none border-[#0e1726]"
-              type="password"
-              placeholder="*******"
-              //   onChange={(e) => setPasswordAgain(e.target.value)}
-            />
-          </div>
+
           <PasswordChecklist
             rules={["minLength", "specialChar", "number", "capital", "match"]}
             minLength={8}
-            value={password}
-            valueAgain={passwordAgain}
+            value={form.password}
+            valueAgain={form.passwordAgain}
             messages={{
               minLength: "Password must be at least 8 characters long.",
               specialChar: "Password must contain a special character.",
