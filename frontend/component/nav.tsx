@@ -3,21 +3,31 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getUser, logout } from "./lib/auth";
 
 const navItems = [
   { id: 1, link: "/", text: "Home" },
   { id: 2, link: "/about_us", text: "About Us" },
   { id: 3, link: "#faq", text: "FAQ" },
   { id: 4, link: "/contact", text: "Contact" },
-  { id: 5, link: "/auth/login", text: "Login" },
-  { id: 6, link: "/auth/signup", text: "Sign Up" },
 ];
 const Nav = () => {
   const [nav, showNav] = useState(false);
   const router = useRouter();
-
   const pathname = usePathname();
+
+  const [user, setUser] = useState<{
+    name: string;
+    email: string;
+  } | null>(null);
+
+  const [profileMenu, setProfileMenu] = useState(false);
+
+  useEffect(() => {
+    const currentUser = getUser();
+    setUser(currentUser);
+  }, []);
 
   const handleNav = () => {
     showNav((prev) => !prev);
@@ -60,7 +70,70 @@ const Nav = () => {
           })}
         </ul>
 
-        <div className="block md:hidden" onClick={handleNav}>
+        <div className="hidden md:flex items-center gap-4">
+          {user ? (
+            <div className="relative">
+              <button
+                onClick={() => setProfileMenu((prev) => !prev)}
+                className="flex items-center gap-3 rounded-full bg-gray-800 px-3 py-2"
+              >
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-black font-bold">
+                  {user.name.charAt(0)}
+                </div>
+
+                <span className="font-medium">{user.name}</span>
+              </button>
+
+              {profileMenu && (
+                <div className="absolute right-0 mt-3 w-56 rounded-2xl bg-white p-2 text-black shadow-xl">
+                  <button
+                    onClick={() => router.push("/dashboard")}
+                    className="w-full rounded-xl px-4 py-3 text-left hover:bg-gray-100"
+                  >
+                    Dashboard
+                  </button>
+
+                  <button
+                    onClick={() => router.push("/dashboard/history")}
+                    className="w-full rounded-xl px-4 py-3 text-left hover:bg-gray-100"
+                  >
+                    Message History
+                  </button>
+
+                  <button
+                    onClick={() => router.push("/dashboard/profile")}
+                    className="w-full rounded-xl px-4 py-3 text-left hover:bg-gray-100"
+                  >
+                    Manage Profile
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      logout();
+                      router.push("/");
+                    }}
+                    className="w-full rounded-xl px-4 py-3 text-left text-red-500 hover:bg-red-50"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center gap-4">
+              <Link href="/auth/login">Login</Link>
+
+              <Link
+                href="/auth/signup"
+                className="rounded-xl bg-white px-5 py-2 text-black"
+              >
+                Sign Up
+              </Link>
+            </div>
+          )}
+        </div>
+
+        <div className="block md:hidden cursor-pointer" onClick={handleNav}>
           <Menu />
         </div>
       </div>
@@ -90,7 +163,7 @@ const Nav = () => {
                 <X />
               </div>
 
-              <ul className="space-y-7.5 text-[18px] pl-2 mx-3 text-center pt-10">
+              {/* <ul className="space-y-7.5 text-[18px] pl-2 mx-3 text-center pt-10">
                 {navItems.map((item) => {
                   const isActive = pathname === item.link;
 
@@ -109,7 +182,135 @@ const Nav = () => {
                     </li>
                   );
                 })}
-              </ul>
+              </ul> */}
+              <div className="flex h-full flex-col">
+                {/* Top Section */}
+                <div className="border-b border-gray-200 p-6">
+                  <Link href="/">
+                    <h1 className="font-sora text-2xl font-bold">Nulky</h1>
+                  </Link>
+
+                  {user ? (
+                    <div className="mt-8 flex items-center gap-4">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-black text-xl font-bold text-white">
+                        {user.name.charAt(0)}
+                      </div>
+
+                      <div>
+                        <h3 className="font-semibold text-black">
+                          {user.name}
+                        </h3>
+
+                        <p className="text-sm text-gray-500">{user.email}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="mt-8 flex flex-col gap-3">
+                      <button
+                        onClick={() => {
+                          showNav(false);
+                          router.push("/auth/login");
+                        }}
+                        className="rounded-xl cursor-pointer border border-gray-300 px-4 py-3 font-medium"
+                      >
+                        Login
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          showNav(false);
+                          router.push("/auth/signup");
+                        }}
+                        className="rounded-xl cursor-pointer bg-black px-4 py-3 font-medium text-white"
+                      >
+                        Create Account
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Main Nav */}
+                <div className="flex-1 overflow-y-auto px-6 py-8">
+                  <ul className="space-y-2">
+                    {user && (
+                      <>
+                        <li>
+                          <button
+                            onClick={() => {
+                              showNav(false);
+                              router.push("/dashboard");
+                            }}
+                            className="w-full rounded-xl px-4 py-3 text-left text-lg hover:bg-gray-100"
+                          >
+                            Dashboard
+                          </button>
+                        </li>
+
+                        <li>
+                          <button
+                            onClick={() => {
+                              showNav(false);
+                              router.push("/dashboard/history");
+                            }}
+                            className="w-full rounded-xl px-4 py-3 text-left text-lg hover:bg-gray-100"
+                          >
+                            Message History
+                          </button>
+                        </li>
+
+                        <li>
+                          <button
+                            onClick={() => {
+                              showNav(false);
+                              router.push("/dashboard/profile");
+                            }}
+                            className="w-full rounded-xl px-4 py-3 text-left text-lg hover:bg-gray-100"
+                          >
+                            Manage Profile
+                          </button>
+                        </li>
+
+                        <div className="my-6 border-t border-gray-200" />
+                      </>
+                    )}
+
+                    {navItems.map((item) => {
+                      const isActive = pathname === item.link;
+
+                      return (
+                        <li key={item.text}>
+                          <button
+                            onClick={() => handleNavClick(item.link)}
+                            className={`w-full rounded-xl px-4 py-3 text-left text-lg transition ${
+                              isActive
+                                ? "bg-black text-white"
+                                : "hover:bg-gray-100"
+                            }`}
+                          >
+                            {item.text}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+
+                {/* Bottom Section */}
+                {user && (
+                  <div className="border-t border-gray-200 p-6">
+                    <button
+                      onClick={() => {
+                        logout();
+                        showNav(false);
+                        router.push("/");
+                      }}
+                      className="w-full rounded-xl cursor-pointer bg-red-50 px-4 py-3 font-medium text-red-500"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
             </motion.div>
           </>
         )}

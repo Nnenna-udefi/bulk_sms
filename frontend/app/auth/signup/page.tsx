@@ -1,13 +1,13 @@
 "use client";
+import { useToast } from "@/component/hook/useToast";
 import { api } from "@/component/lib/api";
-// import { toast } from "@/src/hooks/use-toast";
 // import { createClient } from "@/src/lib/supabaseClient";
 
 import { MessageCircleWarning } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import PasswordChecklist from "react-password-checklist";
+// import PasswordChecklist from "react-password-checklist";
 
 const Signup = () => {
   const router = useRouter();
@@ -21,20 +21,21 @@ const Signup = () => {
   });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
 
   const auth = [
-    { name: "name", type: "text", label: "Name", placeholder: "Name" },
+    { name: "name", type: "text", label: "Full Name", placeholder: "John Doe" },
     {
       name: "email",
       type: "email",
       label: "Email Address",
-      placeholder: "Email Address",
+      placeholder: "you@mail.com",
     },
     {
       name: "phone",
-      type: "text",
+      type: "tel",
       label: "Phone Number",
-      placeholder: "Phone Number",
+      placeholder: "09035656545",
     },
     {
       name: "password",
@@ -86,6 +87,11 @@ const Signup = () => {
 
     if (error) {
       setError(error.message);
+      toast({
+        variant: "default",
+        title: "Account creation failed",
+        description: error.message || "Invalid email or password.",
+      });
       return;
     }
 
@@ -98,7 +104,13 @@ const Signup = () => {
       passwordAgain: "",
     });
 
-    router.push(`/signUp/emailSent?email=${encodeURIComponent(email)}`);
+    if (!error) {
+      toast({
+        title: "Registration successful",
+        description: "Redirecting to your dashboard...",
+      });
+      router.push(`/auth/login?registered=true`);
+    }
   }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({
@@ -113,9 +125,6 @@ const Signup = () => {
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
             Create an Account
           </h1>
-          {/* <p className="pt-3 text-foreground/70">
-            Get started with your personal AI lab assistant
-          </p> */}
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 md:gap-6">
           {error && (
@@ -126,8 +135,10 @@ const Signup = () => {
           )}
           <div className="flex flex-col gap-2">
             {auth.map((field) => (
-              <div key={field.name} className="flex flex-col gap-2">
-                <label htmlFor={field.name}>{field.label}</label>
+              <div key={field.name} className="flex flex-col gap-1">
+                <label htmlFor={field.name} className="font-medium">
+                  {field.label}
+                </label>
 
                 <input
                   name={field.name}
@@ -135,13 +146,20 @@ const Signup = () => {
                   value={form[field.name as keyof typeof form]}
                   placeholder={field.placeholder}
                   onChange={handleChange}
-                  className="border rounded-md p-2 text-[#0e1726] bg-none border-[#0e1726]"
+                  className="border placeholder:text-sm rounded-md p-2 text-[#0e1726] bg-none border-[#0e1726]"
                 />
               </div>
             ))}
           </div>
 
-          <PasswordChecklist
+          <div className="text-sm text-gray-600 mb-6">
+            <p>
+              ** Password must contain at least 8 characters, a special
+              character, a number and a capital letter.
+            </p>
+          </div>
+
+          {/* <PasswordChecklist
             rules={["minLength", "specialChar", "number", "capital", "match"]}
             minLength={8}
             value={form.password}
@@ -153,11 +171,11 @@ const Signup = () => {
               capital: "Password must contain a capital letter.",
               match: "Passwords must match.",
             }}
-          />
+          /> */}
 
           <button
             disabled={loading}
-            className="px-4 py-2  md:text-lg font-bold rounded-full bg-[#0e1726] text-white hover:bg-white hover:text-[#0e1726] w-full"
+            className="px-4 py-2  md:text-lg font-bold rounded-full hover:border bg-[#0e1726] hover:border-[#0e1726] text-white hover:bg-white hover:text-[#0e1726] w-full"
           >
             {loading ? "Signing up..." : "Sign Up"}
           </button>

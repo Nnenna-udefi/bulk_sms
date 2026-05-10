@@ -1,48 +1,34 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/component/lib/api";
 import { useToast } from "@/component/hook/useToast";
-// import { useToast } from "@/src/hooks/use-toast";
 
-const Login = () => {
-  const router = useRouter();
+const ForgetPassword = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  async function handleLogin(e: React.FormEvent) {
+  async function handleForgetPassword(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      const res = await api.login({ email, password });
-      localStorage.setItem("token", res.token);
-      localStorage.setItem("user", JSON.stringify(res.user));
+      const res = await api.forgotPassword({ email });
 
       toast({
-        title: "Login successful",
-        description: "Redirecting to your dashboard...",
+        title: "Reset link sent",
+        description: "Check your email for password reset instructions.",
       });
-
-      router.push("/dashboard");
+      setEmail("");
     } catch (err: any) {
-      // console.error(err.message);
-      toast({
-        variant: "danger",
-        title: "Login Failed",
-        description: err.message || "Invalid email or password.",
-      });
+      console.error(err);
+
+      setError(err?.message || "Something went wrong");
     }
     setLoading(false);
-
-    // clear fields
-    setEmail("");
-    setPassword("");
   }
 
   return (
@@ -50,10 +36,16 @@ const Login = () => {
       <div className="bg-white shadow-md shadow-black container rounded-2xl max-w-125 mx-auto px-4 md:px-6 py-8 lg:px-8  h-full flex flex-col gap-4">
         <div className="text-center py-4">
           <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-            Log In
+            Forget Password
           </h1>
+          <p className="text-gray-600 text-sm p-2">
+            We will send you a reset link
+          </p>
         </div>
-        <form onSubmit={handleLogin} className="flex flex-col gap-4 md:gap-6">
+        <form
+          onSubmit={handleForgetPassword}
+          className="flex flex-col gap-4 md:gap-6"
+        >
           <div className="flex flex-col gap-2">
             <label htmlFor="email" className="font-medium">
               Email
@@ -67,37 +59,21 @@ const Login = () => {
               className="border rounded-md p-2 placeholder:text-sm text-[#0e1726] bg-none border-[#0e1726]"
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between font-medium">
-              <label htmlFor="password">Password</label>
-              <Link href="/auth/forgot-password">Forgot?</Link>
-            </div>
-            <input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              type="password"
-              placeholder="******"
-              required
-              className="border rounded-md p-2 placeholder:text-sm text-[#0e1726] bg-none border-[#0e1726]"
-            />
-          </div>
-
-          {error && <p className="text-danger">{error}</p>}
 
           <button
             disabled={loading}
             className="px-4 py-2 md:text-lg font-bold rounded-full hover:border bg-[#0e1726] hover:border-[#0e1726] text-white hover:bg-white hover:text-[#0e1726] w-full"
           >
-            {loading ? "Logging in..." : "Log In"}
+            {loading ? "Sending reset link..." : "Send reset link"}
           </button>
         </form>
         <div className="mt-6 text-center text-sm">
-          Don&apos;t have an account?{" "}
+          Remembered?{" "}
           <Link
-            href="/auth/signup"
+            href="/auth/login"
             className="text-[#0e1726] hover:underline font-bold"
           >
-            Sign Up
+            Log In
           </Link>
         </div>
       </div>
@@ -105,4 +81,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgetPassword;
