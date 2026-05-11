@@ -32,6 +32,7 @@ const Login = () => {
       });
 
       toast({
+        variant: "default",
         title: "Login successful",
         description: "Redirecting to your dashboard...",
       });
@@ -93,7 +94,7 @@ const Login = () => {
 
           <button
             disabled={loading}
-            className="px-4 flex justify-center items-center gap-2 py-2 md:text-lg font-bold rounded-full hover:border bg-[#0e1726] hover:border-[#0e1726] text-white hover:bg-white hover:text-[#0e1726] w-full"
+            className="px-4 cursor-pointer flex justify-center items-center gap-2 py-2 md:text-lg font-bold rounded-full hover:border bg-[#0e1726] hover:border-[#0e1726] text-white hover:bg-white hover:text-[#0e1726] w-full"
           >
             {loading ? (
               <>

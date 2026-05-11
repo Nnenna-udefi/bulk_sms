@@ -34,6 +34,11 @@ const Signup = () => {
       return;
     }
 
+    if (phone.length > 11) {
+      setError("Phone number is longer than the maximum allowed length (11).");
+      return;
+    }
+
     const minLength = password.length >= 8;
     const hasNumber = /\d/.test(password);
     const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
@@ -47,40 +52,33 @@ const Signup = () => {
     setLoading(true);
 
     // API call only after validation
-    const { error } = await api.register({
-      name,
-      email,
-      phone,
-      password,
-    });
+    try {
+      await api.register({
+        name,
+        email,
+        phone,
+        password,
+      });
 
-    setLoading(false);
+      toast({
+        variant: "default",
+        title: "Registration successful",
+        description: "Log in...",
+      });
 
-    if (error) {
-      setError(error.message);
+      router.push("/auth/login?registered=true");
+    } catch (err: any) {
+      const message =
+        err.message ||
+        "Signup failed. Please check your details and try again.";
+
+      setError(message);
+
       toast({
         variant: "danger",
         title: "Account creation failed",
-        description: error.message || "Invalid email or password.",
+        description: message,
       });
-      return;
-    }
-
-    // success flow
-    setForm({
-      name: "",
-      email: "",
-      phone: "",
-      password: "",
-      passwordAgain: "",
-    });
-
-    if (!error) {
-      toast({
-        title: "Registration successful",
-        description: "Redirecting to your dashboard...",
-      });
-      router.push(`/auth/login?registered=true`);
     }
   }
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -98,12 +96,6 @@ const Signup = () => {
           </h1>
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 md:gap-6">
-          {error && (
-            <div className="flex gap-3">
-              <MessageCircleWarning className="text-danger" />{" "}
-              <p className="text-danger md:text-xl">{error}</p>
-            </div>
-          )}
           <div className="flex flex-col gap-2">
             {auth.map((field) => (
               <div key={field.name} className="flex flex-col gap-1">
@@ -130,6 +122,13 @@ const Signup = () => {
             </p>
           </div>
 
+          {error && (
+            <div className="flex gap-3">
+              <MessageCircleWarning className="text-red-800" />{" "}
+              <p className="text-red-800 md:text-xl">{error}</p>
+            </div>
+          )}
+
           {/* <PasswordChecklist
             rules={["minLength", "specialChar", "number", "capital", "match"]}
             minLength={8}
@@ -146,7 +145,7 @@ const Signup = () => {
 
           <button
             disabled={loading}
-            className="px-4 py-2 flex items-center gap-2 md:text-lg font-bold rounded-full hover:border bg-[#0e1726] hover:border-[#0e1726] text-white hover:bg-white hover:text-[#0e1726] w-full"
+            className="px-4 py-2 flex justify-center items-center gap-2 cursor-pointer md:text-lg font-bold rounded-full hover:border bg-[#0e1726] hover:border-[#0e1726] text-white hover:bg-white hover:text-[#0e1726] w-full"
           >
             {loading ? (
               <>

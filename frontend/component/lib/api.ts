@@ -31,9 +31,14 @@ const request = async (
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.message || "Something went wrong");
-  }
+    const errorMessage = data?.message || data?.error || "Something went wrong";
 
+    const error = new Error(errorMessage);
+
+    (error as any).response = data;
+
+    throw error;
+  }
   return data;
 };
 

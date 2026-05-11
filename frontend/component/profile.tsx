@@ -73,7 +73,7 @@ const Profile = () => {
       return;
     setDeleting(true);
     try {
-      api.deleteProfile;
+      await api.deleteProfile();
       toast({
         variant: "default",
         title: "Account deleted",
@@ -84,7 +84,7 @@ const Profile = () => {
       toast({
         variant: "danger",
         title: "Delete failed.",
-        description: error || "Couldn't delete, try again.",
+        description: err.message || "Couldn't delete, try again.",
       });
     } finally {
       setDeleting(false);

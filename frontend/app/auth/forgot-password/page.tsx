@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { api } from "@/component/lib/api";
 import { useToast } from "@/component/hook/useToast";
+import { Loader2 } from "lucide-react";
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState("");
@@ -19,14 +20,21 @@ const ForgetPassword = () => {
       const res = await api.forgotPassword({ email });
 
       toast({
+        variant: "default",
         title: "Reset link sent",
         description: "Check your email for password reset instructions.",
       });
       setEmail("");
     } catch (err: any) {
-      console.error(err);
+      const message = err.message || "Something went wrong";
 
-      setError(err?.message || "Something went wrong");
+      setError(message);
+
+      toast({
+        variant: "danger",
+        title: "Reset link not sent",
+        description: message,
+      });
     }
     setLoading(false);
   }
@@ -62,9 +70,16 @@ const ForgetPassword = () => {
 
           <button
             disabled={loading}
-            className="px-4 py-2 md:text-lg font-bold rounded-full hover:border bg-[#0e1726] hover:border-[#0e1726] text-white hover:bg-white hover:text-[#0e1726] w-full"
+            className="px-4 py-2 flex gap-2 items-center justify-center cursor-pointer md:text-lg font-bold rounded-full hover:border bg-[#0e1726] hover:border-[#0e1726] text-white hover:bg-white hover:text-[#0e1726] w-full"
           >
-            {loading ? "Sending reset link..." : "Send reset link"}
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin" size={18} />
+                Sending reset link...
+              </>
+            ) : (
+              <>Send reset link</>
+            )}
           </button>
         </form>
         <div className="mt-6 text-center text-sm">

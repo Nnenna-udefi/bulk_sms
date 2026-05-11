@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { History, LogOut, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "./context/authContext";
 import { GrDashboard } from "react-icons/gr";
 import { CgProfile } from "react-icons/cg";
@@ -20,8 +20,28 @@ const Nav = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { user, logout } = useAuth();
-
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [profileMenu, setProfileMenu] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
+      const clickedButton = buttonRef.current?.contains(target);
+      const clickedMenu = menuRef.current?.contains(target);
+
+      if (!clickedButton && !clickedMenu) {
+        setProfileMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleNav = () => {
     showNav((prev) => !prev);
@@ -64,6 +84,7 @@ const Nav = () => {
               </Avatar>
               <span className="font-medium">{user.name}</span> */}
               <button
+                ref={buttonRef}
                 onClick={() => setProfileMenu((prev) => !prev)}
                 className="flex items-center gap-3 rounded-full cursor-pointer bg-gray-800 px-3 py-2"
               >
@@ -75,28 +96,31 @@ const Nav = () => {
               </button>
 
               {profileMenu && (
-                <div className="absolute border right-0 mt-3 w-56 rounded-2xl bg-[#f7f3f3] p-2 text-black shadow-xl">
+                <div
+                  ref={menuRef}
+                  className="absolute border right-0 mt-3 w-56 rounded-2xl bg-[#fafafa] p-2 text-black shadow-xl"
+                >
                   <button
                     onClick={() => router.push("/dashboard")}
-                    className="w-full flex gap-2 rounded-xl px-4 py-3 text-left cursor-pointer hover:bg-gray-100"
+                    className="w-full flex gap-2 items-center rounded-xl px-4 py-3 text-left cursor-pointer hover:bg-gray-100"
                   >
-                    <GrDashboard />
+                    <GrDashboard size={20} />
                     Dashboard
                   </button>
 
                   <button
                     onClick={() => router.push("/dashboard/history")}
-                    className="w-full flex gap-2 rounded-xl px-4 py-3 text-left cursor-pointer hover:bg-gray-100"
+                    className="w-full flex gap-2 items-center rounded-xl px-4 py-3 text-left cursor-pointer hover:bg-gray-100"
                   >
-                    <History />
+                    <History size={20} />
                     Message History
                   </button>
 
                   <button
                     onClick={() => router.push("/dashboard/profile")}
-                    className="w-full flex gap-2 rounded-xl px-4 py-3 text-left cursor-pointer hover:bg-gray-100"
+                    className="w-full flex gap-2 items-center rounded-xl px-4 py-3 text-left cursor-pointer hover:bg-gray-100"
                   >
-                    <CgProfile />
+                    <CgProfile size={20} />
                     Manage Profile
                   </button>
 
@@ -105,9 +129,9 @@ const Nav = () => {
                       logout();
                       router.push("/");
                     }}
-                    className="w-full flex gap-2 rounded-xl px-4 py-3 text-left cursor-pointer text-red-500 hover:bg-red-50"
+                    className="w-full flex gap-2 items-center rounded-xl px-4 py-3 text-left cursor-pointer text-red-500 hover:bg-red-50"
                   >
-                    <LogOut />
+                    <LogOut size={20} />
                     Logout
                   </button>
                 </div>
@@ -228,8 +252,9 @@ const Nav = () => {
                               showNav(false);
                               router.push("/dashboard");
                             }}
-                            className="w-full rounded-xl px-4 py-3 text-left text-lg hover:bg-gray-100"
+                            className="w-full flex gap-2 items-center rounded-xl px-4 py-3 text-left text-lg hover:bg-gray-100"
                           >
+                            <GrDashboard size={20} />
                             Dashboard
                           </button>
                         </li>
@@ -240,8 +265,9 @@ const Nav = () => {
                               showNav(false);
                               router.push("/dashboard/history");
                             }}
-                            className="w-full rounded-xl px-4 py-3 text-left text-lg hover:bg-gray-100"
+                            className="w-full flex gap-2 items-center rounded-xl px-4 py-3 text-left text-lg hover:bg-gray-100"
                           >
+                            <History size={20} />
                             Message History
                           </button>
                         </li>
@@ -252,8 +278,9 @@ const Nav = () => {
                               showNav(false);
                               router.push("/dashboard/profile");
                             }}
-                            className="w-full rounded-xl px-4 py-3 text-left text-lg hover:bg-gray-100"
+                            className="w-full flex gap-2 items-center rounded-xl px-4 py-3 text-left text-lg hover:bg-gray-100"
                           >
+                            <CgProfile size={20} />
                             Manage Profile
                           </button>
                         </li>
@@ -261,25 +288,28 @@ const Nav = () => {
                         <div className="my-6 border-t border-gray-200" />
                       </>
                     )}
+                    {!user && (
+                      <>
+                        {navItems.map((item) => {
+                          const isActive = pathname === item.link;
 
-                    {navItems.map((item) => {
-                      const isActive = pathname === item.link;
-
-                      return (
-                        <li key={item.text}>
-                          <button
-                            onClick={() => handleNavClick(item.link)}
-                            className={`w-full rounded-xl px-4 py-3 text-left text-lg transition ${
-                              isActive
-                                ? "bg-black text-white"
-                                : "hover:bg-gray-100"
-                            }`}
-                          >
-                            {item.text}
-                          </button>
-                        </li>
-                      );
-                    })}
+                          return (
+                            <li key={item.text}>
+                              <button
+                                onClick={() => handleNavClick(item.link)}
+                                className={`w-full rounded-xl px-4 py-3 text-left text-lg transition ${
+                                  isActive
+                                    ? "bg-black text-white"
+                                    : "hover:bg-gray-100"
+                                }`}
+                              >
+                                {item.text}
+                              </button>
+                            </li>
+                          );
+                        })}
+                      </>
+                    )}
                   </ul>
                 </div>
 
@@ -292,8 +322,9 @@ const Nav = () => {
                         showNav(false);
                         router.push("/");
                       }}
-                      className="w-full rounded-xl cursor-pointer bg-red-50 px-4 py-3 font-medium text-red-500"
+                      className="w-full flex gap-2 items-center rounded-xl cursor-pointer bg-red-50 px-4 py-3 font-medium text-red-500"
                     >
+                      <LogOut size={20} />
                       Logout
                     </button>
                   </div>

@@ -67,6 +67,10 @@ export default function Dashboard() {
         throw new Error(data.message || "Failed to send SMS");
       }
 
+      if (!data?.data?.message_id) {
+        throw new Error("SMS failed: No message ID returned");
+      }
+
       setResponse(data);
       addHistory({
         id: crypto.randomUUID(),
@@ -234,22 +238,22 @@ export default function Dashboard() {
               <div className="mt-3 space-y-2 font-dmSans text-sm text-green-700">
                 <p>
                   <span className="font-semibold">Message ID:</span>{" "}
-                  {response.data.message_id}
+                  {response?.data?.message_id}
                 </p>
 
                 <p>
                   <span className="font-semibold">Status:</span>{" "}
-                  {response.data.message}
+                  {response?.data?.message}
                 </p>
 
                 <p>
                   <span className="font-semibold">Balance:</span>{" "}
-                  {response.data.balance}
+                  {response?.data?.balance}
                 </p>
 
                 <p>
                   <span className="font-semibold">User:</span>{" "}
-                  {response.data.user}
+                  {response?.data?.user}
                 </p>
               </div>
             </div>
