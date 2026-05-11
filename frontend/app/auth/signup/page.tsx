@@ -1,9 +1,8 @@
 "use client";
+import { auth } from "@/component/hook/constant";
 import { useToast } from "@/component/hook/useToast";
 import { api } from "@/component/lib/api";
-// import { createClient } from "@/src/lib/supabaseClient";
-
-import { MessageCircleWarning } from "lucide-react";
+import { Loader2, MessageCircleWarning } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -22,34 +21,6 @@ const Signup = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
-
-  const auth = [
-    { name: "name", type: "text", label: "Full Name", placeholder: "John Doe" },
-    {
-      name: "email",
-      type: "email",
-      label: "Email Address",
-      placeholder: "you@mail.com",
-    },
-    {
-      name: "phone",
-      type: "tel",
-      label: "Phone Number",
-      placeholder: "09035656545",
-    },
-    {
-      name: "password",
-      type: "password",
-      label: "Password",
-      placeholder: "*******",
-    },
-    {
-      name: "passwordAgain",
-      type: "password",
-      label: "Confirm Password",
-      placeholder: "*******",
-    },
-  ];
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -88,7 +59,7 @@ const Signup = () => {
     if (error) {
       setError(error.message);
       toast({
-        variant: "default",
+        variant: "danger",
         title: "Account creation failed",
         description: error.message || "Invalid email or password.",
       });
@@ -175,9 +146,16 @@ const Signup = () => {
 
           <button
             disabled={loading}
-            className="px-4 py-2  md:text-lg font-bold rounded-full hover:border bg-[#0e1726] hover:border-[#0e1726] text-white hover:bg-white hover:text-[#0e1726] w-full"
+            className="px-4 py-2 flex items-center gap-2 md:text-lg font-bold rounded-full hover:border bg-[#0e1726] hover:border-[#0e1726] text-white hover:bg-white hover:text-[#0e1726] w-full"
           >
-            {loading ? "Signing up..." : "Sign Up"}
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin" size={18} />
+                Signing up...
+              </>
+            ) : (
+              <>Sign up</>
+            )}
           </button>
         </form>
         <div className="mt-6 text-center text-sm">

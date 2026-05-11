@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { Send, Users, MessageSquare, Loader2 } from "lucide-react";
-import { getUser } from "./lib/auth";
+import { addHistory } from "./lib/smsHistory";
+import { useAuth } from "./context/authContext";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -18,6 +21,7 @@ type SmsResponse = {
 };
 
 export default function Dashboard() {
+  const router = useRouter();
   const [recipients, setRecipients] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,15 +35,7 @@ export default function Dashboard() {
 
   const characterCount = message.length;
 
-  const [user, setUser] = useState<{
-    name: string;
-    email: string;
-  } | null>(null);
-
-  useEffect(() => {
-    const currentUser = getUser();
-    setUser(currentUser);
-  }, []);
+  const { user, logout } = useAuth();
 
   const handleSendSMS = async () => {
     setLoading(true);
@@ -72,11 +68,27 @@ export default function Dashboard() {
       }
 
       setResponse(data);
+      addHistory({
+        id: crypto.randomUUID(),
+        to: recipientList,
+        message,
+        status: "sent",
+        response: data,
+        createdAt: Date.now(),
+      });
       setRecipients("");
       setMessage("");
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
+        addHistory({
+          id: crypto.randomUUID(),
+          to: recipientList,
+          message,
+          status: "failed",
+          error: err instanceof Error ? err.message : "Unknown error",
+          createdAt: Date.now(),
+        });
       } else {
         setError("Something went wrong");
       }
@@ -94,19 +106,20 @@ export default function Dashboard() {
             <h1 className="font-sora text-3xl font-bold text-black">
               SMS Dashboard
             </h1>
-            <h2 className="font-sora text-2xl font-bold text-black">
+            <p className="font-sora text-xl pt-3 font-bold text-black">
               Welcome, {user?.name}
-            </h2>
+            </p>
 
             <p className="mt-2 font-dmSans text-gray-600">
               Send bulk messages quickly and efficiently.
             </p>
           </div>
-
-          <button className="flex items-center gap-2 rounded-xl bg-black px-5 py-3 font-dmSans text-sm font-medium text-white transition hover:opacity-90">
-            <MessageSquare size={18} />
-            Message History
-          </button>
+          <Link href="/dashboard/history">
+            <button className="flex items-center cursor-pointer gap-2 rounded-xl bg-black px-5 py-3 font-dmSans text-sm font-medium text-white transition hover:opacity-90">
+              <MessageSquare size={18} />
+              Message History
+            </button>
+          </Link>
         </div>
 
         {/* Stats */}

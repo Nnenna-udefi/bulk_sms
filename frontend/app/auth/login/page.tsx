@@ -4,6 +4,9 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/component/lib/api";
 import { useToast } from "@/component/hook/useToast";
+import { useAuth } from "@/component/context/authContext";
+import { Loader2 } from "lucide-react";
+
 // import { useToast } from "@/src/hooks/use-toast";
 
 const Login = () => {
@@ -13,7 +16,7 @@ const Login = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
-
+  const { login } = useAuth();
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -21,14 +24,18 @@ const Login = () => {
 
     try {
       const res = await api.login({ email, password });
-      localStorage.setItem("token", res.token);
-      localStorage.setItem("user", JSON.stringify(res.user));
+      login(res.token, {
+        _id: res._id,
+        name: res.name,
+        email: res.email,
+        phone: res.phone,
+      });
 
       toast({
         title: "Login successful",
         description: "Redirecting to your dashboard...",
       });
-
+      document.cookie = `token=${res.token}; path=/`;
       router.push("/dashboard");
     } catch (err: any) {
       // console.error(err.message);
@@ -86,9 +93,16 @@ const Login = () => {
 
           <button
             disabled={loading}
-            className="px-4 py-2 md:text-lg font-bold rounded-full hover:border bg-[#0e1726] hover:border-[#0e1726] text-white hover:bg-white hover:text-[#0e1726] w-full"
+            className="px-4 flex justify-center items-center gap-2 py-2 md:text-lg font-bold rounded-full hover:border bg-[#0e1726] hover:border-[#0e1726] text-white hover:bg-white hover:text-[#0e1726] w-full"
           >
-            {loading ? "Logging in..." : "Log In"}
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin" size={18} />
+                Logging in...
+              </>
+            ) : (
+              <>Log in</>
+            )}
           </button>
         </form>
         <div className="mt-6 text-center text-sm">

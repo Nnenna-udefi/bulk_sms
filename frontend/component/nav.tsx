@@ -1,33 +1,27 @@
 "use client";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { History, LogOut, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { getUser, logout } from "./lib/auth";
+import { useState } from "react";
+import { useAuth } from "./context/authContext";
+import { GrDashboard } from "react-icons/gr";
+import { CgProfile } from "react-icons/cg";
+// import { Avatar, AvatarFallback } from "./ui/avatar";
 
 const navItems = [
   { id: 1, link: "/", text: "Home" },
   { id: 2, link: "/about_us", text: "About Us" },
-  { id: 3, link: "#faq", text: "FAQ" },
+  { id: 3, link: "/#faq", text: "FAQ" },
   { id: 4, link: "/contact", text: "Contact" },
 ];
 const Nav = () => {
   const [nav, showNav] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-
-  const [user, setUser] = useState<{
-    name: string;
-    email: string;
-  } | null>(null);
+  const { user, logout } = useAuth();
 
   const [profileMenu, setProfileMenu] = useState(false);
-
-  useEffect(() => {
-    const currentUser = getUser();
-    setUser(currentUser);
-  }, []);
 
   const handleNav = () => {
     showNav((prev) => !prev);
@@ -52,30 +46,26 @@ const Nav = () => {
   };
   return (
     <div className="py-4 md:py-6 md:text-lg text-base px-8 md:px-16 bg-gray-900 text-white">
-      <div className="flex justify-between w-full">
+      <div className="flex items-center justify-between w-full">
         <Link href="/">
           <h1 className="font-bold">Nulky</h1>
         </Link>
 
-        <ul className="md:flex gap-6 hidden">
-          {navItems.map((item) => {
-            const isActive = pathname === item.link;
-            return (
-              <Link key={item.id} href={item.link}>
-                <li className={`${isActive ? "border-b" : ""} hover:border-b`}>
-                  {item.text}
-                </li>
-              </Link>
-            );
-          })}
-        </ul>
-
         <div className="hidden md:flex items-center gap-4">
           {user ? (
             <div className="relative">
+              {/* <Avatar
+                className="h-9 w-9 cursor-pointer"
+                onClick={() => setProfileMenu((prev) => !prev)}
+              >
+                <AvatarFallback className="bg-white text-black font-bold">
+                  {user.name.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <span className="font-medium">{user.name}</span> */}
               <button
                 onClick={() => setProfileMenu((prev) => !prev)}
-                className="flex items-center gap-3 rounded-full bg-gray-800 px-3 py-2"
+                className="flex items-center gap-3 rounded-full cursor-pointer bg-gray-800 px-3 py-2"
               >
                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-black font-bold">
                   {user.name.charAt(0)}
@@ -85,25 +75,28 @@ const Nav = () => {
               </button>
 
               {profileMenu && (
-                <div className="absolute right-0 mt-3 w-56 rounded-2xl bg-white p-2 text-black shadow-xl">
+                <div className="absolute border right-0 mt-3 w-56 rounded-2xl bg-[#f7f3f3] p-2 text-black shadow-xl">
                   <button
                     onClick={() => router.push("/dashboard")}
-                    className="w-full rounded-xl px-4 py-3 text-left hover:bg-gray-100"
+                    className="w-full flex gap-2 rounded-xl px-4 py-3 text-left cursor-pointer hover:bg-gray-100"
                   >
+                    <GrDashboard />
                     Dashboard
                   </button>
 
                   <button
                     onClick={() => router.push("/dashboard/history")}
-                    className="w-full rounded-xl px-4 py-3 text-left hover:bg-gray-100"
+                    className="w-full flex gap-2 rounded-xl px-4 py-3 text-left cursor-pointer hover:bg-gray-100"
                   >
+                    <History />
                     Message History
                   </button>
 
                   <button
                     onClick={() => router.push("/dashboard/profile")}
-                    className="w-full rounded-xl px-4 py-3 text-left hover:bg-gray-100"
+                    className="w-full flex gap-2 rounded-xl px-4 py-3 text-left cursor-pointer hover:bg-gray-100"
                   >
+                    <CgProfile />
                     Manage Profile
                   </button>
 
@@ -112,8 +105,9 @@ const Nav = () => {
                       logout();
                       router.push("/");
                     }}
-                    className="w-full rounded-xl px-4 py-3 text-left text-red-500 hover:bg-red-50"
+                    className="w-full flex gap-2 rounded-xl px-4 py-3 text-left cursor-pointer text-red-500 hover:bg-red-50"
                   >
+                    <LogOut />
                     Logout
                   </button>
                 </div>
@@ -121,6 +115,20 @@ const Nav = () => {
             </div>
           ) : (
             <div className="flex items-center gap-4">
+              <ul className="md:flex gap-6 hidden">
+                {navItems.map((item) => {
+                  const isActive = pathname === item.link;
+                  return (
+                    <Link key={item.id} href={item.link}>
+                      <li
+                        className={`${isActive ? "border-b" : ""} hover:border-b`}
+                      >
+                        {item.text}
+                      </li>
+                    </Link>
+                  );
+                })}
+              </ul>
               <Link href="/auth/login">Login</Link>
 
               <Link
@@ -163,26 +171,6 @@ const Nav = () => {
                 <X />
               </div>
 
-              {/* <ul className="space-y-7.5 text-[18px] pl-2 mx-3 text-center pt-10">
-                {navItems.map((item) => {
-                  const isActive = pathname === item.link;
-
-                  return (
-                    <li key={item.text}>
-                      <button
-                        onClick={() => handleNavClick(item.link)}
-                        className={`${
-                          isActive
-                            ? "font-bold"
-                            : "text-[#0e1726] hover:text-[#4f4e4c]"
-                        } w-full text-lg`}
-                      >
-                        {item.text}
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul> */}
               <div className="flex h-full flex-col">
                 {/* Top Section */}
                 <div className="border-b border-gray-200 p-6">
@@ -191,7 +179,7 @@ const Nav = () => {
                   </Link>
 
                   {user ? (
-                    <div className="mt-8 flex items-center gap-4">
+                    <div className="mt-8 flex items-center gap-4 cursor-pointer">
                       <div className="flex h-14 w-14 items-center justify-center rounded-full bg-black text-xl font-bold text-white">
                         {user.name.charAt(0)}
                       </div>

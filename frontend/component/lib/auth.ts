@@ -1,3 +1,6 @@
+import { useCallback, useEffect, useState } from "react";
+import { api } from "./api";
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const getToken = () => localStorage.getItem("token");
@@ -19,11 +22,49 @@ export const getUser = () => {
   if (typeof window === "undefined") return null;
 
   const user = localStorage.getItem("user");
+  if (!user || user === "undefined") return null;
 
-  return user ? JSON.parse(user) : null;
+  try {
+    return JSON.parse(user);
+  } catch (e) {
+    localStorage.removeItem("user");
+    return null;
+  }
 };
 
 export const logout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
+};
+
+export const useAuth = () => {
+  const [user, setUser] = useState<any | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const refreshProfile = useCallback(async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+    try {
+      const res = await api.getProfile();
+      // Safe check for nested data
+      const u = res?.user || res?.data || res;
+      setUser(u);
+      localStorage.setItem("user", JSON.stringify(u));
+    } catch {
+      logout();
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    refreshProfile();
+  }, [refreshProfile]);
+
+  return { user, loading, refreshProfile };
 };

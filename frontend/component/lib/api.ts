@@ -98,4 +98,6 @@ export const api = {
       },
       true,
     ),
+
+  deleteProfile: () => request("/user/profile", { method: "DELETE" }, true),
 };
