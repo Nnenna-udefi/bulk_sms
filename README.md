@@ -50,38 +50,17 @@ This application provides a clean user experience for authentication, SMS campai
 
 ---
 
-# 📂 Project Structure
+## 📸 Architecture & Preview
 
-```bash
-/
-│
-├── app/
-│   ├── auth/
-│   ├── dashboard/
-│   ├── contact/
-│   └── about_us/
-│
-├── component/
-│   ├── lib/
-│   ├── hook/
-│   ├── context/
-│   ├── helper/
-│   ├── ui/
-│   └── sections/
-│
-├── public/
-│
-└── styles/
-```
-
----
+![Nulky Dashboard Preview](./image/nulky-dashboard-1.png)
+![Nulky Dashboard2 Preview](./image/nulky-dashboard-2.png)
 
 # ⚙️ Installation
 
 ## Clone Repository
 
 ```bash
-git clone <your-frontend-repo-url>
+git clone <https://github.com/Nnenna-udefi/bulk_sms.git>
 ```
 
 ---
@@ -319,5 +298,3 @@ MIT License
 ## Backend
 
 - [Chinedu Ramsey](https://github.com/nedu-ramzi)
-
-Built with modern frontend technologies and a focus on clean user experience.
