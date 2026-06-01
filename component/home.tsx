@@ -10,7 +10,8 @@ const Home = () => {
   return (
     <div className="">
       {/* Hero section */}
-      <section className="lg:h-screen h-125 max-w-full bg-[url('../image/hero.png')] bg-no-repeat px-6 md:px-16 py-10 md:py-18 text-white">
+      <div className="max-w-full>
+      <section className="lg:h-screen h-125 bg-cover bg-[url('../image/hero.png')] bg-no-repeat px-6 md:px-16 py-10 md:py-18 text-white">
         <div className="flex flex-col gap-4 md:gap-6  py-6 md:py-16 w-full md:w-[60%] text-center md:text-left">
           <h1 className="text-4xl md:text-5xl font-bold ">
             Send Messages That Reach
@@ -35,7 +36,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-
+</div>
       <section className="bg-[#fafafa] border-y text-black border-gray-200 block py-10 px-8 md:px-24  md:flex justify-between">
         <div className="text-sm md:text-2xl pb-4 md:pb-0 flex gap-4 items-center">
           <p>Instantly</p>
