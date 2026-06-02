@@ -10,33 +10,33 @@ const Home = () => {
   return (
     <div className="">
       {/* Hero section */}
-      <div className="max-w-full>
-      <section className="lg:h-screen h-125 bg-cover bg-[url('../image/hero.png')] bg-no-repeat px-6 md:px-16 py-10 md:py-18 text-white">
-        <div className="flex flex-col gap-4 md:gap-6  py-6 md:py-16 w-full md:w-[60%] text-center md:text-left">
-          <h1 className="text-4xl md:text-5xl font-bold ">
-            Send Messages That Reach
-          </h1>
+      <div className="max-w-full">
+        <section className="lg:h-screen h-125 bg-cover bg-[url('../image/hero.png')] bg-no-repeat px-6 md:px-16 py-10 md:py-18 text-white">
+          <div className="flex flex-col gap-4 md:gap-6  py-6 md:py-16 w-full md:w-[60%] text-center md:text-left">
+            <h1 className="text-4xl md:text-5xl font-bold ">
+              Send Messages That Reach
+            </h1>
 
-          <p className="text-xl md:text-2xl">
-            Power your business communication with fast, secure, and affordable
-            bulk SMS. Reach thousands of customers in seconds with no delays &
-            no complexity.
-          </p>
-          <div className="flex gap-4  mt-10 justify-center md:justify-start">
-            <Link href="/auth/login">
-              <button className="px-4 md:px-6 py-2 md:py-4 text-sm md:text-lg font-bold rounded-full bg-[#6495ED] text-white hover:bg-white hover:text-[#6495ED] w-fit">
-                Get Started
-              </button>
-            </Link>
-            <Link href="/about_us">
-              <button className="px-4 md:px-6 py-2 md:py-4 text-sm md:text-lg font-bold rounded-full text-white hover:bg-[#6495ED] bg-none hover:border-none border border-white w-fit">
-                Learn More
-              </button>
-            </Link>
+            <p className="text-xl md:text-2xl">
+              Power your business communication with fast, secure, and
+              affordable bulk SMS. Reach thousands of customers in seconds with
+              no delays & no complexity.
+            </p>
+            <div className="flex gap-4  mt-10 justify-center md:justify-start">
+              <Link href="/auth/login">
+                <button className="px-4 md:px-6 py-2 md:py-4 text-sm md:text-lg font-bold rounded-full bg-[#6495ED] text-white hover:bg-white hover:text-[#6495ED] w-fit">
+                  Get Started
+                </button>
+              </Link>
+              <Link href="/about_us">
+                <button className="px-4 md:px-6 py-2 md:py-4 text-sm md:text-lg font-bold rounded-full text-white hover:bg-[#6495ED] bg-none hover:border-none border border-white w-fit">
+                  Learn More
+                </button>
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
-</div>
+        </section>
+      </div>
       <section className="bg-[#fafafa] border-y text-black border-gray-200 block py-10 px-8 md:px-24  md:flex justify-between">
         <div className="text-sm md:text-2xl pb-4 md:pb-0 flex gap-4 items-center">
           <p>Instantly</p>
